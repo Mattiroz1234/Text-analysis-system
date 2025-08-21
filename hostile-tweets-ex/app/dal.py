@@ -1,9 +1,15 @@
 from pymongo import MongoClient
+import pandas as pd
+from dotenv import load_dotenv
+import os
 
-MONGO_URL = "mongodb+srv://IRGC:iraniraniran@iranmaldb.gurutam.mongodb.net/"
-client = MongoClient(MONGO_URL)
+load_dotenv()
+database_url = os.getenv("MONGO_URL")
+client = MongoClient(database_url)
 db = client["IranMalDB"]
 collection = db["tweets"]
 
-a = collection.find_one()
-print(a)
+def get_tweets():
+    cursor = collection.find()
+    data = pd.DataFrame(list(cursor))
+    return data
